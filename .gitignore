@@ -34,6 +34,7 @@ local.properties
 node_modules/
 ios/Pods
 npm-debug.log
+yarn-error.log
 
 # BUCK
 buck-out/
