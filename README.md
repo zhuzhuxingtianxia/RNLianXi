@@ -1,32 +1,89 @@
 # react-native 
 
-*react-native: 0.31.0*
+```
+ "react": "17.0.2",
+ "react-native": "0.67.3",
+```
 
 ## 编译并运行
 ```
-react-native run-ios
+yarn ios
 
 ```
-## 工程报错
-对于老工程运行在新的Xcode版本上RCTWebSocket报错，如下：
-```
-Ignoring return value of function declared with 'warn_unused_result' attribute
-```
-解决：点击RCTWebSocket => TAGETS =>Build Settings => Custom Compiler Flags 去掉 -Werror -Wall两个flags 再运行项目就可以了。
 
-## 编译报错
-```
- ERROR  EMFILE: too many open files, watch
-{"errno":-24,"syscall":"watch","code":"EMFILE","filename":null}
-Error: EMFILE: too many open files, watch
-    at FSEvent.FSWatcher._handle.onchange (internal/fs/watchers.js:123:28)
-```
-老版本的react-native需要安装*watchman*，在终端执行：
-```
-brew install watchman
-```
-静静等待安装完成
+## 设置路径别名
 
-还是报错：
+```
+yarn add babel-plugin-root-import --dev
+```
+配置别名，打开`babel.config.js`文件
+修改如下：
+```
+module.exports = {
+  plugins: [
+    [ "babel-plugin-root-import",{
+        paths: [
+            {
+                rootPathSuffix: './src/assets',
+                rootPathPrefix: '@assets'
+            },
+            {
+                rootPathSuffix: './src/common',
+                rootPathPrefix: '@common'
+            }
+        ]
+    } ]
+  ],
+  presets: ['module:metro-react-native-babel-preset']
+};
+```
 
+然后清除缓存重新打包
+```
+yarn start --reset-cache
+```
+
+# 导航结构
+```
+const Screens = [
+  { name: '', compontent: Com, 
+    options: { title: '', headerTintColor: '', headerStyle:{}, headerTitleStyle:{} } 
+  }
+]
+```
+
+```
+<NavigationContainer>
+  <Stack.Navigator mode='modal'>
+    <Stack.Screen name="Main" 
+      component={
+        <MStack.Navigator>
+          <MStack.Screen component={
+            <Tab.Navigator>
+              <Tab.Screen />
+              <Tab.Screen />
+              <Tab.Screen />
+            </Tab.Navigator>
+          }/>
+
+          <MStack.Screen name='detail' options={{}} component={Detail}/>
+          {
+            Screens.map((obj) => {
+              return <MStack.Screen {...obj}/>
+            })
+          }
+        </MStack.Navigator>
+      }
+      options={{
+        headerShown: false
+      }}
+    />
+    {
+      Modals.map((obj,index) => {
+        return <Stack.Screen {...obj}/>
+      })
+    }
+  </Stack.Navigator>
+</NavigationContainer>
+```
 
