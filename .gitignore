@@ -32,6 +32,7 @@ local.properties
 # node.js
 #
 node_modules/
+ios/Pods
 npm-debug.log
 
 # BUCK
