@@ -3,6 +3,8 @@
 ```
  "react": "17.0.2",
  "react-native": "0.67.3",
+ "@react-navigation/native": "^6.0.8",
+ "@react-navigation/native-stack": "^6.5.0",
 ```
 
 ## 编译并运行
